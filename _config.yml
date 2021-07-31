@@ -102,9 +102,9 @@ analytics:
 # Site Author
 author:
   name             : "HONGMIN KIM"
-  avatar           : "https://avatars.githubusercontent.com/u/29566032?s=60&v=4" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "일상으로 초대합니다."
-  location         : "Somewhere"
+  location         : "South Korea"
   email            :
   links:
     - label: "Email"
