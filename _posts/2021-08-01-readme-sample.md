@@ -18,7 +18,6 @@ toc_sticky: true
 toc_label: 목차
 ---
 
-# Sample Post Document
 ## chapter 1.overview
 aaaa
 ## chapter 2.toc
