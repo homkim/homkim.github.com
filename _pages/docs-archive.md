@@ -1,7 +1,7 @@
 ---
 title: "Documents"
 layout: posts
-permalink: /docs/
+permalink: /posts/
 author_profile: true
 use_math: true
 comments: true
