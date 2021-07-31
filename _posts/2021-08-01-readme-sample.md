@@ -30,7 +30,7 @@ dddd
 eeee
 
 ---
-# Math Expression
+## Math Expression
 
 $x+y=1$  
 $x^2+y^3=12$  
