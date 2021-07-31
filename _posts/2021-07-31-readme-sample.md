@@ -9,6 +9,9 @@ related: true
 use_math: true
 categories:
 - documents
+tags:
+- sample
+- readme
 last_modified_at: '2021-07-31 21:54:43'
 ---
 
