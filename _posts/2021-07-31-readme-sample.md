@@ -6,6 +6,7 @@ read_time: true
 comments: true
 share: true
 related: true
+use_math: true
 categories:
 - documents
 last_modified_at: '2021-07-31 21:54:43'
@@ -24,3 +25,4 @@ dddd
 eeee
 
 
+$x+y=1$
