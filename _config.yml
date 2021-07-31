@@ -25,8 +25,7 @@ comments:
     shortname            : homkim # https://help.disqus.com/customer/portal/articles/466208-what-s-a-shortname-
   discourse:
     server               : # https://meta.discourse.org/t/embedding-discourse-comments-via-javascript/31963 , e.g.: meta.discourse.org
-  facebook:
-    # https://developers.facebook.com/docs/plugins/comments
+  facebook:                # https://developers.facebook.com/docs/plugins/comments
     appid                :
     num_posts            : # 5 (default)
     colorscheme          : # "light" (default), "dark"
@@ -111,7 +110,7 @@ author:
       url: mailto:homkim@naver.com
     - label: "Website"
       icon: "fas fa-fw fa-link"
-      #url: "http://honbabzone.com/"
+      #url: ""
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       # url: "https://twitter.com/"

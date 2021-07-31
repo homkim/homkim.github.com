@@ -141,7 +141,7 @@ title                    : "JAVA Blog" # Meta 태그에 들어가는 영역 , ma
 title_separator          : "&#124;" # 타이틀 사이 구분자 <title>Welcome to Jekyll | Minimal Mistakes</title> 해당 형식으로 들어갑니다.
 subtitle                 : "Version 1.0" # 타이틀 아래에 나올 작은 글씨 
 name                     : "homkim" # 맨 하단 이름 찍히는 영역
-description              : "JAVA와 Spring Boot 혹은 Sever등 다양한 개발을 공부하는 블로그" # Meta 태그에 들어가는 영역 
+description              : "" # Meta 태그에 들어가는 영역 
 url                      : "https://7271kim.github.io/" # GitBlog 호스트 주소
 baseurl                  : # subPath https://7271kim.github.io/blog라고 하고 싶을 시 "/blog" 라고 적는다.
 repository               : "7271kim/7271kim.github.com" # GitHub username/repo-name  
@@ -189,7 +189,7 @@ footer:
       # url:
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
-      #url: ""
+      #url: "https://www.facebook.com/seokjin.kim.16"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/homkim"
