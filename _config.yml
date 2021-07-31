@@ -20,7 +20,7 @@ title                    : "homkim's Blog"
 title_separator          : "&#124;"
 subtitle                 : "version 1.0" # site tagline that appears below site title in masthead
 name                     : "일상으로의 초대"
-description              : "반갑습니다~"
+description              : "반갑습니다"
 url                      : "https://homkim.github.io/" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "homkim/homkim.github.com" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
@@ -103,7 +103,7 @@ analytics:
 author:
   name             : "일상으로의 초대"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "반갑습니다~"
+  bio              : "반갑습니다"
   location         : "South Korea"
   email            :
   links:
