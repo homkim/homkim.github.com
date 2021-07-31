@@ -13,6 +13,9 @@ tags:
 - tag1
 - tag2
 last_modified_at: '2021-08-01 08:24:25'
+toc: true
+toc_sticky: true
+toc_label: 목차
 ---
 
 # Sample Post Document
