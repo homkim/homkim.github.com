@@ -2,11 +2,11 @@
 title: "posts/sample document"
 last_modified_at: 2021-07-31T16:20:02-05:00
 categories:
-  - Post Formats
+  - cate1
 tags:
-  - Post Formats
-  - readability
-  - standard
+  - tag1
+  - tag2
+  - tag3
 ---
 
 This post has been updated and should show a modified date if used in a layout.
