@@ -1,6 +1,6 @@
 ---
 title: "About this blog"
-layout: about
+layout: archive
 permalink: /about/
 author_profile: true
 ---
