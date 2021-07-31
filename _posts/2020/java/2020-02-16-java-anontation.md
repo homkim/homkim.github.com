@@ -38,7 +38,7 @@ public @interface myanotation {
     int myage();
 }
 ```
-이렇게 정의한 어노테이션은 @myanotation(myName = "김석진" , myAge = 33 ) 혹은 @myanotation(myName = "김석진" , myAge = 33, myWeight = 74 ) 처럼 사용할 수 있습니다. 디폴트 값이 없는 경우에는 반드시 기술해야 하며 있는 경우는 옵션입니다. **기본 엘리멘트는 value**이며 해당 값은 @어노테이션(값)으로 바로 사용 가능합니다.
+이렇게 정의한 어노테이션은 @myanotation(myName = "homkim" , myAge = 33 ) 혹은 @myanotation(myName = "homkim" , myAge = 33, myWeight = 74 ) 처럼 사용할 수 있습니다. 디폴트 값이 없는 경우에는 반드시 기술해야 하며 있는 경우는 옵션입니다. **기본 엘리멘트는 value**이며 해당 값은 @어노테이션(값)으로 바로 사용 가능합니다.
 
 
 ```java

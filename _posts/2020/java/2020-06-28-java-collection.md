@@ -115,7 +115,7 @@ public static void main(String args[]){
 
 {% highlight wl linenos %}
 박석진
-김석진
+homkim
 차석진
 이석진
 {% endhighlight %}
@@ -171,7 +171,7 @@ public static void main(String args[]){
 // 랜덤 LinkedHashSet는 순서대로 출력
 차석진
 이석진
-김석진
+homkim
 박석진
 {% endhighlight %}
 
@@ -246,7 +246,7 @@ public static void main(String args[]){
 {% highlight wl linenos %}
 / 랜덤
 박석진
-김석진
+homkim
 차석진
 이석진
 {% endhighlight %}
@@ -313,7 +313,7 @@ public static void main(String args[]){
 ```
 {% highlight wl linenos %}
 // 출력
-김석진
+homkim
 박석진
 이석진
 차석진

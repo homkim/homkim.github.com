@@ -360,7 +360,7 @@ public class Student implements Comparable<Student> {
 ```
 ```java
 PriorityQueue<Student> priorityQueue = new PriorityQueue<>(Comparator.reverseOrder());
-priorityQueue.add(new Student("김석진", 100));
+priorityQueue.add(new Student("homkim", 100));
 priorityQueue.add(new Student("박석진", 90));
 priorityQueue.add(new Student("진석진", 95));
 priorityQueue.add(new Student("구석진", 88));
@@ -371,7 +371,7 @@ priorityQueue.add(new Student("나석진", 100));
 ```
 {% highlight wl linenos %}
 // 출력 
-이름 : 김석진 점수 : 100
+이름 : homkim 점수 : 100
 이름 : 나석진 점수 : 100
 이름 : 다석진 점수 : 100
 이름 : 사석진 점수 : 100
@@ -415,7 +415,7 @@ PriorityQueue<Student> priorityQueue = new PriorityQueue<>( ( first, second )-> 
     }
     return result;
 }) ;
-priorityQueue.add(new Student("김석진", 100));
+priorityQueue.add(new Student("homkim", 100));
 priorityQueue.add(new Student("박석진", 90));
 priorityQueue.add(new Student("진석진", 95));
 priorityQueue.add(new Student("구석진", 88));
@@ -433,7 +433,7 @@ while( !priorityQueue.isEmpty() ) {
 
 {% highlight wl linenos %}
 // 출력 
-이름 : 김석진 점수 : 100
+이름 : homkim 점수 : 100
 이름 : 나석진 점수 : 100
 이름 : 다석진 점수 : 100
 이름 : 사석진 점수 : 100
@@ -545,7 +545,7 @@ public class MaxHeap <T extends Comparable<T> > {
 ```
 ```java
 MaxHeap<Student> maxHeap = new MaxHeap<>(7);
-maxHeap.add(new Student("김석진", 100));
+maxHeap.add(new Student("homkim", 100));
 maxHeap.add(new Student("박석진", 90));
 maxHeap.add(new Student("진석진", 95));
 maxHeap.add(new Student("구석진", 88));
@@ -556,7 +556,7 @@ maxHeap.add(new Student("나석진", 100));
 ```
 {% highlight wl linenos %}
 //출력
-이름 : 김석진 점수 : 100
+이름 : homkim 점수 : 100
 이름 : 나석진 점수 : 100
 이름 : 다석진 점수 : 100
 이름 : 사석진 점수 : 100

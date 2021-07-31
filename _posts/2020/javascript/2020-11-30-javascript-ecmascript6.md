@@ -240,7 +240,7 @@ const union = [0, ...first, 4, ...second ]; // 1,2 , 5, 6을 풀어서 세팅
 
 console.log( union ); //[0, 1, 2, 4, 5, 6]
 
-const myname = "김석진";
+const myname = "homkim";
 
 console.log([...myname]);  // ["김", "석", "진"]
 console.log(...myname); // 김 석 진
@@ -395,7 +395,7 @@ for ( let item of [10,20,30]){
     console.log(item); // 10, 20, 30 출력
 }
 
-for ( let item of "김석진"){
+for ( let item of "homkim"){
     console.log(item); // 김, 석, 진 출력
 }
 
@@ -635,14 +635,14 @@ class Soccer extends Member {
 
 }
 
-const soccer = new Soccer("김석진", "8", "유소년 축구팀" );
+const soccer = new Soccer("homkim", "8", "유소년 축구팀" );
 soccer.toString();
 soccer.getLeader();
 soccer.getData();
 ```
 
 {% highlight wl linenos %}
-hihi 난 김석진이고 8살 이야
+hihi 난 homkim이고 8살 이야
 파트는 유소년 축구팀야
 리더 취득
 데이터 취득
@@ -741,7 +741,7 @@ new Proxy( target , 실행할 handler ); 입니다. 그럼 object에 키와 valu
 
 ```java
 const obj = {
-    'name' : '김석진',
+    'name' : 'homkim',
     'job' : '개발자'
 }
 

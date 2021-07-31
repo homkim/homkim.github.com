@@ -1,1 +1,1 @@
-[관련 URL](https://honbabzone.com/jekyll/start-gitHubBlog/)
+안녕하세요.

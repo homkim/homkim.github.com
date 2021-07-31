@@ -48,7 +48,7 @@ public class Student {
 public static void main(String args[]){
         
     List<Student> students = Arrays.asList( 
-                new Student("김석진", 10),
+                new Student("homkim", 10),
                 new Student("이석진", 11),
                 new Student("박석진", 13)
             );
@@ -60,7 +60,7 @@ public static void main(String args[]){
 }
 ```
 {% highlight wl linenos %}
-김석진 10살.
+homkim 10살.
 이석진 11살.
 박석진 13살.
 
@@ -72,7 +72,7 @@ public static void main(String args[]){
 public static void main(String args[]){
         
     List<Student> students = Arrays.asList( 
-                new Student("김석진", 10),
+                new Student("homkim", 10),
                 new Student("이석진", 11),
                 new Student("박석진", 13)
             );

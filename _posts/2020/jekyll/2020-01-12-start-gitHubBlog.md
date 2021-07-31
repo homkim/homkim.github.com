@@ -140,7 +140,7 @@ locale                   : "ko-KR"
 title                    : "JAVA Blog" # Meta 태그에 들어가는 영역 , masthead_title등이 없으면 기본값으로 나온다.
 title_separator          : "&#124;" # 타이틀 사이 구분자 <title>Welcome to Jekyll | Minimal Mistakes</title> 해당 형식으로 들어갑니다.
 subtitle                 : "Version 1.0" # 타이틀 아래에 나올 작은 글씨 
-name                     : "김석진" # 맨 하단 이름 찍히는 영역
+name                     : "homkim" # 맨 하단 이름 찍히는 영역
 description              : "JAVA와 Spring Boot 혹은 Sever등 다양한 개발을 공부하는 블로그" # Meta 태그에 들어가는 영역 
 url                      : "https://7271kim.github.io/" # GitBlog 호스트 주소
 baseurl                  : # subPath https://7271kim.github.io/blog라고 하고 싶을 시 "/blog" 라고 적는다.
@@ -153,7 +153,7 @@ words_per_minute         : 200 # 해당 포스트 읽는데 걸리는 시간을 
 
 # Site Author
 author:
-  name             : "김석진" 
+  name             : "homkim" 
   avatar           : "/assets/images/profile/poto.jpg" # 프로필 이미지
   bio              : "꾸준히 공부하는 개발자입니다. <br> 블로그 포스트 글에서 잘못된 부분이나 수정했으면 하는 부분, 적극적으로 댓글 남겨주신다면 감사하겠습니다."
   location         : "Republic of Korea"
@@ -164,13 +164,13 @@ author:
       #url: mailto:7271kim@naver.com
     - label: "Website"
       icon: "fas fa-fw fa-link"
-      url: "http://honbabzone.com/"
+      #url: ""
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       # url: "https://twitter.com/"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
-      url: "https://www.facebook.com/seokjin.kim.16"
+      #url: ""
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/7271kim"
@@ -183,16 +183,16 @@ footer:
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      url: mailto:7271kim@naver.com
+      url: mailto:homkim@naver.com
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       # url:
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
-      url: "https://www.facebook.com/seokjin.kim.16"
+      #url: ""
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      url: "https://github.com/7271kim"
+      url: "https://github.com/homkim"
     - label: "GitLab"
       icon: "fab fa-fw fa-gitlab"
       # url:
