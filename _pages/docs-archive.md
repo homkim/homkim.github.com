@@ -1,6 +1,6 @@
 ---
 title: "Documents"
-layout: tags
+layout: posts
 permalink: /docs/
 author_profile: true
 use_math: true
