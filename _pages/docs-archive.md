@@ -1,6 +1,6 @@
 ---
 title: "Documents"
-layout: docs
+layout: archive
 permalink: /docs/
 author_profile: true
 use_math: true
