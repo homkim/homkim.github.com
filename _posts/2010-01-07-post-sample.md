@@ -1,5 +1,5 @@
 ---
-title: "posts sample document"
+title: "posts/sample document"
 last_modified_at: 2021-07-31T16:20:02-05:00
 categories:
   - Post Formats
