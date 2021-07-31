@@ -8,10 +8,10 @@ share: true
 related: true
 use_math: true
 categories:
-- documents
+- cate1
 tags:
-- sample
-- readme
+- tag1
+- tag2
 last_modified_at: '2021-07-31 21:54:43'
 ---
 
