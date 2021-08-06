@@ -1,5 +1,5 @@
 ---
-title: 스프링 부트 입문
+title: Spring Boot 입문
 layout: single
 author_profile: true
 read_time: true
@@ -81,14 +81,24 @@ Spring Data JPA (데이타베이스 연동 기능)
 
 ### 003. "Hello World" 출력하기
 src/main/resources/static/index.html 파일 생성  
-브라우저에서 localhost:8080/index.html 열어서 확인
-페이지 없다고 나오면 서버 재시작해볼 것
+브라우저에서 localhost:8080/index.html 열어서 확인  
+페이지 없다고 나오면 서버 재시작  
+서버 실행: Spring Boot Dashboard에서 app 실행
 
 ## 03.웹서비스 동작원리
 > Mission : "Hello World"가 출력되는 과정을 설명하시오
 
+* 웹페이지는 Client가 Request하고 Server가 이에 응답(Response)하는 구조로 실행됨
+* 서버 실행은 : Spring Boot Dashboard에서 실행
+* 서버 실행 : <ArtifactID>Application.java 파일을 실행
+* 서버 실행로그에서 서버가 실행된 포트(8080) 확인이 가능
+* localhost 서버의 8080 포트에서 실행 중
+* localhost:8080/hello.html 과 같이 파일명을 직접 명시하게되면  .../resources/static 디렉토리에서 해당 파일을 찾는다.
+
 ## 04.뷰 템플릿과 MVC패턴
-> Mission : 
+> Mission : MVC 패턴을 활용한, 템블릿 페이지를 만드시오.
+
+
 
 ## 05.mvc의 역할과 실행 흐름
 > Mission : 
@@ -120,6 +130,6 @@ src/main/resources/static/index.html 파일 생성
 ## 14.수정 폼 만들기
 > Mission : 
 
-## 15.무언가에 고수가 되는 법 | 세 가지 일의 감각
+## 15.무언가에 고수가 되는 법 (세 가지 일의 감각)
 > Mission : 
 
