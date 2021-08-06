@@ -98,6 +98,11 @@ src/main/resources/static/index.html 파일 생성
 ## 04.뷰 템플릿과 MVC패턴
 > Mission : MVC 패턴을 활용한, 템블릿 페이지를 만드시오.
 
+** MVC **  
+View : Presentation 영역 담당  
+Control : Client의 요청을 분석하여 처리과정 담당  
+Model : 데이타 처리 담당  
+
 
 
 ## 05.mvc의 역할과 실행 흐름
