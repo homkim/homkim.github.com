@@ -79,7 +79,7 @@ H2 Database (데이타베이스, 메모리 또는 파일 가능)
 Mustache (MVC의 View를 담당)  
 Spring Data JPA (데이타베이스 연동 기능)  
 
-### 003. "Hello World" 출력하기
+### ③ "Hello World" 출력하기
 src/main/resources/static/index.html 파일 생성  
 브라우저에서 localhost:8080/index.html 열어서 확인  
 페이지 없다고 나오면 서버 재시작  
@@ -98,11 +98,102 @@ src/main/resources/static/index.html 파일 생성
 ## 04.뷰 템플릿과 MVC패턴
 > Mission : MVC 패턴을 활용한, 템블릿 페이지를 만드시오.
 
-** MVC **  
-View : Presentation 영역 담당  
-Control : Client의 요청을 분석하여 처리과정 담당  
-Model : 데이타 처리 담당  
+### MVC 기본
+* View : Presentation 영역 담당  
+* Control : Client의 요청을 분석하여 처리과정 담당  
+* Model : 데이타 처리 담당  
 
+html과 다르게 동적으로 페이지를 보여주기 위해서는 template 파일이 필요함  
+/src/main/resources/templates 디렉토리에서 view를 위한 템플릿 파일을 생성해야함  
+
+### ① 파라미터 없이 구성
+**greetings.mustache**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>유저님, 반갑습니다!</h1>
+</body>
+</html>
+```
+
+/src/main/java/com/example/myapp/ 디렉토리에 controller 디렉토리를 만들고 아래에 controller를 생성함
+
+**MyappController.java**
+1. Controller 선언
+2. 함수생성: view template명 리턴
+3. GetMapping 어노테이션 설정
+
+```java
+package com.sds.myapp.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class MyappController {
+    
+    @GetMapping("/hi")
+    public String niceToMeetYou(){
+
+        return "greetings";  // templates/greetings.mustache를 브라우저로 전송
+    }
+}
+```
+
+### ② 파라미터 전달 구성
+**mustache 기본**  
+* {{parameter}} : 파라미터 전달  
+* {{>filename}} : 파일명 전달  
+
+**greeting.mustache**
+* 변수로 username 선언
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>{{username}}님, 반갑습니다!</h1>
+</body>
+</html>
+```
+
+**MyappController.java**
+* Contoller 함수의 인자값에 Model model 선언
+* addAttribute 함수를 통해 전달할 파라미터 할당
+
+```java
+package com.sds.myapp.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class MyappController {
+    
+    @GetMapping("/hi")
+    public String niceToMeetYou(Model model){
+
+        model.addAttribute("username", "홍길동");
+        return "greetings";  // templates/greetings.mustache를 브라우저로 전송
+    }
+}
+
+```
 
 
 ## 05.mvc의 역할과 실행 흐름
