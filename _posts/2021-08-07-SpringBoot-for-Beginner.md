@@ -166,7 +166,7 @@ public class MyappController {
     <title>Document</title>
 </head>
 <body>
-    <h1>{{username}}님, 반갑습니다!</h1>
+    <h1>\{\{username\}\}님, 반갑습니다!</h1>
 </body>
 </html>
 ```
@@ -218,7 +218,7 @@ public class MyappController {
     <title>Document</title>
 </head>
 <body>
-    <h1>{{nicname}}님, 다음에 만나요!</h1>
+    <h1>\{\{nicname\}\}님, 다음에 만나요!</h1>
 </body>
 </html>
 ```
@@ -381,15 +381,15 @@ header - content - footer 영역으로 단순 잘라내서 각각의 파일로 �
 **greetings.mustache**
 
 ```html
-{{>layouts/header}}    
+\{\{>layouts/header\}\}    
 
 <!-- content -->
 <div class="bg-dark text-white p-5">
-    <h1>{{username}}님, 반갑습니다!</h1>
+    <h1>\{\{username\}\}님, 반갑습니다!</h1>
 
 </div>
 
-{{>layouts/footer}}    
+\{\{>layouts/footer\}\}    
 
 ```
 
