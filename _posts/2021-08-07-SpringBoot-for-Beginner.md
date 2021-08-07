@@ -89,10 +89,10 @@ src/main/resources/static/index.html 파일 생성
 > Mission : "Hello World"가 출력되는 과정을 설명하시오
 
 * 웹페이지는 Client가 Request하고 Server가 이에 응답(Response)하는 구조로 실행됨
-* 서버 실행은 : Spring Boot Dashboard에서 실행
-* 서버 실행 : <ArtifactID>Application.java 파일을 실행
-* 서버 실행로그에서 서버가 실행된 포트(8080) 확인이 가능
+* 서버 실행1 : Spring Boot Dashboard에서 실행
+* 서버 실행2 : <ArtifactID>Application.java 실행해도 됨 (IntelliJ)
 * localhost 서버의 8080 포트에서 실행 중
+* 서버 실행로그에서 서버가 실행된 포트(8080) 확인이 가능
 * localhost:8080/hello.html 과 같이 파일명을 직접 명시하게되면  .../resources/static 디렉토리에서 해당 파일을 찾는다.
 
 ## 04.뷰 템플릿과 MVC패턴
@@ -150,6 +150,7 @@ public class MyappController {
 ```
 
 ### ② 파라미터 전달 구성
+
 **mustache 기본**  
 * \{\{parameter\}\} : 파라미터 전달  
 * \{\{>filename\}\} : 파일명 전달  
@@ -574,6 +575,7 @@ public class ArticleController {
 3. DB가 해당 객체 인식가능하도록 @Entity 어노테이션 추가
 4. title, content를 컬럼으로 정의하고 Column 어노테이션 설정
 5. 테이블에 담길 Key 설정을 위해 Id 컬럼을 정의하고 @Id 어노테이션 지정 및 값을 자동생성 하도록 설정
+
 ```java
 package com.example.myapp.entity;
 
@@ -651,6 +653,7 @@ public class ArticleForm {
 * 관리대상 Entity Article과 키 값의 타입 Long을 지정해야 합니다.
 
 **.../repository/ArticleRepository.java**
+
 ```java
 package com.example.myapp.repository;
 
