@@ -150,8 +150,8 @@ public class MyappController {
 
 ### ② 파라미터 전달 구성
 **mustache 기본**  
-* {{parameter}} : 파라미터 전달  
-* {{>filename}} : 파일명 전달  
+* \{\{parameter\}\} : 파라미터 전달  
+* \{\{>filename\}\} : 파일명 전달  
 
 **greeting.mustache**
 * 변수로 username 선언
