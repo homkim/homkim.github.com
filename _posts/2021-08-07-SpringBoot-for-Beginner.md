@@ -132,7 +132,7 @@ html과 다르게 동적으로 페이지를 보여주기 위해서는 template �
 3. GetMapping 어노테이션 설정
 
 ```java
-package com.sds.myapp.controller;
+package com.example.myapp.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -176,7 +176,7 @@ public class MyappController {
 * addAttribute 함수를 통해 전달할 파라미터 할당
 
 ```java
-package com.sds.myapp.controller;
+package com.example.myapp.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
