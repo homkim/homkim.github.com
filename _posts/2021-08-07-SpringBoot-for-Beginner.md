@@ -489,6 +489,215 @@ localhost/articles/new 로 접속하여 화면에 값을 입력하고
 ## 08.데이터 생성 with JPA
 > Mission : JPA를 활용하여, DB에 데이터를 생성하시오.
 
+### DB 선택
+oracle, mysql, mariadb, postgresql, h2, ,,,  
+실습은 프로젝트 생성시 셋팅한 h2 db 활용합니다.  
+DB는 자바를 이해하지 못하기 때문에 JPA가 필요합니다.  
+jpa 핵심도구는 Entity와 Repository 두가지가 있습니다.  
+
+
+### 데이터 저장 과정
+DTO > Controller > Entity > Repository > save() -> DB
+
+### DB에 저장하기 중 form 데이터를 Entiry로 변환하기
+
+* DB에 저장하기 위해 우선 Form데이터를 Entity로 변환해야 하며
+* Entity데이터를 Repository를 통해서 save()하면 DB에 데이터가 저장된다.
+* 우선 코드를 먼저 작성한 후에 에러를 해결하는 방식으로 진행한다.
+
+
+**.../ArticleController.java**
+1. DTO를 Entity로 변환
+2. Repository에게 Entity를 DB안에 저장
+
+```java
+package com.example.myapp.controller;
+
+import com.example.myapp.entity.Article;
+import com.example.myapp.repository.ArticleRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import dto.ArticleForm;
+
+@Controller
+public class ArticleController {
+    
+    @Autowired
+    private ArticleRepository articleRepository;
+
+    @GetMapping("/articles/new")
+    public String newArticleForm(){
+
+        return "articles/new";
+    }
+
+    @PostMapping("/articles/create")
+    public String createArticle(ArticleForm form){
+        System.out.println(form.toString());
+
+        // 1.DTO를 Entity로 변환
+        Article article = form.toEntity();
+        System.out.println(article.toString());
+
+        // 2.Repository에게 Entity를 DB안에 저장
+        Article saved = articleRepository.save(article);
+        System.out.println(saved.toString());
+
+        return "articles/new";
+    }
+}
+
+```
+
+### Article 클래스 생성
+좌측의 Article article 의 에러를 해결하기 위해 Article 클래스를 생성함니다.
+
+**.../entity/Article.java**
+1. entity package 생성
+2. 그 안에 Article 클래스 생성
+3. DB가 해당 객체 인식가능하도록 @Entity 어노테이션 추가
+4. title, content를 컬럼으로 정의하고 Column 어노테이션 설정
+5. 테이블에 담길 Key 설정을 위해 Id 컬럼을 정의하고 @Id 어노테이션 지정 및 값을 자동생성 하도록 설정
+```java
+package com.example.myapp.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
+public class Article {
+
+    @Id // 대표값 지정
+    @GeneratedValue // 1,2,3 자동생성
+    private Long id;
+
+    @Column
+    private String title;
+
+    @Column
+    private String content;
+
+    public Article(Long id, String title, String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "Article [id=" + id + ", title=" + title + ", content=" + content + "]";
+    }
+    
+}
+```
+
+### Form 데이터를 Entity로 변환
+우측의 form.toEntity() 에러를 해결하기 위해 ArticleForm 클래스에 toEntity() 함수를 추가합니다.
+
+**.../dto/ArticleForm.java**
+1. toEntity 함수를 생성하고
+2. Article 객체를 생성하여 리턴합니다.
+
+```java
+package dto;
+
+import com.example.myapp.entity.Article;
+
+public class ArticleForm {
+    private String title;
+    private String content;
+    
+    public ArticleForm(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "ArticleForm [title=" + title + ", content=" + content + "]";
+    }
+
+    public Article toEntity() {
+
+        return new Article(null, title, content);
+    }
+    
+    
+}
+```
+
+
+### Entiry 데이터를 Repository 통해 save 기능 구현
+
+* Repository 기능은 CrudRepository를 상속하여 Interface로 구현해야 합니다.
+* 관리대상 Entity Article과 키 값의 타입 Long을 지정해야 합니다.
+
+**.../repository/ArticleRepository.java**
+```java
+package com.example.myapp.repository;
+
+import com.example.myapp.entity.Article;
+
+import org.springframework.data.repository.CrudRepository;
+
+public interface ArticleRepository extends CrudRepository<Article, Long> {
+    
+}
+```
+
+### articleRepository 객체를 생성
+* 객체 자동주입(DI)을 위해 @Autowired 설정
+* 단계별 변환 및 저장이 잘 되었는지 확인하기 위해 form, article, saved의 내용을 확인
+
+**.../controller/ArticleController.java**
+
+```java
+package com.example.myapp.controller;
+
+import com.example.myapp.entity.Article;
+import com.example.myapp.repository.ArticleRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import dto.ArticleForm;
+
+@Controller
+public class ArticleController {
+    
+    @Autowired // 스프링 부트가 미리 생성해놓은 객체를 가져다가 자동 연결
+    private ArticleRepository articleRepository;
+
+    @GetMapping("/articles/new")
+    public String newArticleForm(){
+
+        return "articles/new";
+    }
+
+    @PostMapping("/articles/create")
+    public String createArticle(ArticleForm form){
+        System.out.println(form.toString());
+
+        // 1.DTO를 Entity로 변환
+        Article article = form.toEntity();
+        System.out.println(article.toString());
+
+        // 2.Repository에게 Entity를 DB안에 저장
+        Article saved = articleRepository.save(article);
+        System.out.println(saved.toString());
+
+        return "articles/new";
+    }
+}
+```
 
 
 ## 09.DB 테이블과 SQL
