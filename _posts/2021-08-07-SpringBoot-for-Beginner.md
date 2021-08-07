@@ -151,8 +151,8 @@ public class MyappController {
 
 ### ② 파라미터 전달 구성
 **mustache 기본**  
-* \{{parameter\}} : 파라미터 전달  
-* \{{>filename\}} : 파일명 전달  
+* \{\{parameter\}\} : 파라미터 전달  
+* \{\{>filename\}\} : 파일명 전달  
 
 **greeting.mustache**
 * 변수로 username 선언
@@ -167,7 +167,7 @@ public class MyappController {
     <title>Document</title>
 </head>
 <body>
-    <h1>\{{username\}}님, 반갑습니다!</h1>
+    <h1>\{\{username\}\}님, 반갑습니다!</h1>
 </body>
 </html>
 ```
@@ -220,7 +220,7 @@ public class MyappController {
     <title>Document</title>
 </head>
 <body>
-    <h1>\{{nicname\}}님, 다음에 만나요!</h1>
+    <h1>\{\{nicname\}\}님, 다음에 만나요!</h1>
 </body>
 </html>
 ```
@@ -393,15 +393,15 @@ header - content - footer 영역으로 단순 잘라내서 각각의 파일로 �
 **greetings.mustache**
 
 ```html
-\{{>layouts/header\}}    
+\{\{>layouts/header\}\}    
 
 <!-- content -->
 <div class="bg-dark text-white p-5">
-    <h1>\{{username\}}님, 반갑습니다!</h1>
+    <h1>\{\{username\}\}님, 반갑습니다!</h1>
 
 </div>
 
-\{{>layouts/footer\}}    
+\{\{>layouts/footer\}\}    
 
 ```
 
@@ -418,7 +418,7 @@ header - content - footer 영역으로 단순 잘라내서 각각의 파일로 �
 
 **.../templates/articles/new.mustache**
 ```html
-{{>layouts/header}}
+\{\{>layouts/header\}\}
 
 <form class="container" action="/articles/create" method="post">
     <div class="mb-3">
@@ -433,7 +433,7 @@ header - content - footer 영역으로 단순 잘라내서 각각의 파일로 �
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
-{{>layouts/footer}}
+\{\{>layouts/footer\}\}
 ```
 
 ### ② controller 생성
