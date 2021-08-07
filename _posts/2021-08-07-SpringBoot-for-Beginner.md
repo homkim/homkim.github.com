@@ -395,10 +395,101 @@ header - content - footer 영역으로 단순 잘라내서 각각의 파일로 �
 
 
 ## 07.폼 데이터 주고 받기
-> Mission : 
+> Mission : 사용자로부터 폼 데이터를 받고, 이를 컨트롤러에서 확인하시오.
+
+### view 생성
+* action에 컨트롤러가 받기 위한 주소를 입력합니다.
+* method는 보안 때문에 post방식을 써야 합니다.
+* form 객체로 데이터를 보내기 위해서는 각 항목의  name에 이름을 적어줘야 합니다.
+(예, name="title")
+
+
+**.../templates/articles/new.mustache**
+```html
+{{>layouts/header}}
+
+<form class="container" action="/articles/create" method="post">
+    <div class="mb-3">
+        <label class="form-label">제목</label>
+        <input type="text" class="form-control" name="title">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">내용</label>
+        <textarea class="form-control" rows=3 name="content" ></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{{>layouts/footer}}
+```
+
+### controller 생성
+* form에서 submit을 눌렀을 때 처리하기 위함
+* form에서 method를 post로 했기 때문에 PostMapping으로 받아야 함
+
+**.../controller/ArticleController.java**
+```java
+package com.example.myapp.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import dto.ArticleForm;
+
+@Controller
+public class ArticleController {
+    
+    @GetMapping("/articles/new")
+    public String newArticleForm(){
+
+        return "articles/new";
+    }
+
+    @PostMapping("/articles/create")
+    public String createArticle(ArticleForm form){
+        System.out.println(form.toString());
+        return "articles/new";
+    }
+}
+```
+
+### model 생성
+* form의 값을 java로 가져오기 위해 정의함
+
+**.../dto/ArticleForm.java**
+```java
+package dto;
+
+public class ArticleForm {
+    private String title;
+    private String content;
+    
+    public ArticleForm(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "ArticleForm [title=" + title + ", content=" + content + "]";
+    }
+}
+
+```
+
+### 테스트
+localhost/articles/new 로 접속하여 화면에 값을 입력하고
+서버 로그에 해당 값이 잘 넘어오는지 확인해봅니다.
+
+콘솔 로그 화면에 title과 content 값이 찍히는지 확인합니다.
+
 
 ## 08.데이터 생성 with JPA
-> Mission : 
+> Mission : JPA를 활용하여, DB에 데이터를 생성하시오.
+
+
 
 ## 09.DB 테이블과 SQL
 > Mission : 
