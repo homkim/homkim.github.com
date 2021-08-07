@@ -79,7 +79,7 @@ H2 Database (데이타베이스, 메모리 또는 파일 가능)
 Mustache (MVC의 View를 담당)  
 Spring Data JPA (데이타베이스 연동 기능)  
 
-### ③ "Hello World" 출력하기
+#### ③ "Hello World" 출력하기
 src/main/resources/static/index.html 파일 생성  
 브라우저에서 localhost:8080/index.html 열어서 확인  
 페이지 없다고 나오면 서버 재시작  
@@ -107,6 +107,7 @@ html과 다르게 동적으로 페이지를 보여주기 위해서는 template �
 /src/main/resources/templates 디렉토리에서 view를 위한 템플릿 파일을 생성해야함  
 
 ### ① 파라미터 없이 구성
+
 **greetings.mustache**
 
 ```html
@@ -150,8 +151,8 @@ public class MyappController {
 
 ### ② 파라미터 전달 구성
 **mustache 기본**  
-* \{\{parameter\}\} : 파라미터 전달  
-* \{\{>filename\}\} : 파일명 전달  
+* \{{parameter\}} : 파라미터 전달  
+* \{{>filename\}} : 파일명 전달  
 
 **greeting.mustache**
 * 변수로 username 선언
@@ -166,7 +167,7 @@ public class MyappController {
     <title>Document</title>
 </head>
 <body>
-    <h1>\{\{username\}\}님, 반갑습니다!</h1>
+    <h1>\{{username\}}님, 반갑습니다!</h1>
 </body>
 </html>
 ```
@@ -199,14 +200,15 @@ public class MyappController {
 ## 05.mvc의 역할과 실행 흐름
 > Mission : 뷰 템플릿 페이지가 출력되기까지, MVC의 역할과 실행 흐름을 설명하시오.
 
-### 기본 흐름
+### ① 기본 흐름
 1. Controller가 Client의 localhost:8080/hi 페이지 요청을 받음
 2. Model은 username에 값을 전달
 3. View Template은 Model 로 부터 받은 데이터를 가지고 화면을 출력
 
-### goodbye 페이지 만들기
+### ② goodbye 페이지 만들기
+* view template 생성합니다.
 
-**view template 생성 :: goodbye.mustache**
+**goodbye.mustache**
 
 ```html
 <!DOCTYPE html>
@@ -218,12 +220,13 @@ public class MyappController {
     <title>Document</title>
 </head>
 <body>
-    <h1>\{\{nicname\}\}님, 다음에 만나요!</h1>
+    <h1>\{{nicname\}}님, 다음에 만나요!</h1>
 </body>
 </html>
 ```
 
 **controller 생성 및 model 값 전달**
+
 ```java
     @GetMapping("/bye")
     public String seeYouNext(Model model){
@@ -239,7 +242,9 @@ public class MyappController {
 
 view template 에서 header와 footer를 만들어서 모듈화하는 과정입니다.
 
+### ① 페이지 기본레이아웃 설정
 ① getbootstrap.com 페이지에서 get started > Starter Template 을 그대로 복사해와서 greetings와 goodbye를 수정합니다.
+
 ```html
 <!doctype html>
 <html lang="en">
@@ -269,7 +274,10 @@ view template 에서 header와 footer를 만들어서 모듈화하는 과정입�
   </body>
 </html>
 ```
-② navbar를 검색하여 코드를 가져옵니다.
+
+### ② Navigation Bar 설정
+부트스트랩에서 navbar를 검색하여 코드를 가져옵니다.
+
 ```html
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
@@ -308,11 +316,14 @@ view template 에서 header와 footer를 만들어서 모듈화하는 과정입�
   </div>
 </nav>
 ```
-③ greetings.mustache 파일을 위 두개의 소스로 재구성한 뒤에 templates/layouts 디렉토리를 생성하고 그 아래에 header.mustache와 footer.mustache 파일을 생성합니다.  
+
+### ③ 모듈화
+greetings.mustache 파일을 위 두개의 소스로 재구성한 뒤에 templates/layouts 디렉토리를 생성하고 그 아래에 header.mustache와 footer.mustache 파일을 생성합니다.  
 header - content - footer 영역으로 단순 잘라내서 각각의 파일로 구성하면 됩니다.  
 최종 모습은 아래와 같습니다.  
 
 **header.mustache**
+
 ```html
 <!doctype html>
 <html lang="en">
@@ -367,6 +378,7 @@ header - content - footer 영역으로 단순 잘라내서 각각의 파일로 �
     
 ```
 **footer.mustache**
+
 ```html
     <!-- footer -->
     <div>
@@ -381,15 +393,15 @@ header - content - footer 영역으로 단순 잘라내서 각각의 파일로 �
 **greetings.mustache**
 
 ```html
-\{\{>layouts/header\}\}    
+\{{>layouts/header\}}    
 
 <!-- content -->
 <div class="bg-dark text-white p-5">
-    <h1>\{\{username\}\}님, 반갑습니다!</h1>
+    <h1>\{{username\}}님, 반갑습니다!</h1>
 
 </div>
 
-\{\{>layouts/footer\}\}    
+\{{>layouts/footer\}}    
 
 ```
 
@@ -397,7 +409,7 @@ header - content - footer 영역으로 단순 잘라내서 각각의 파일로 �
 ## 07.폼 데이터 주고 받기
 > Mission : 사용자로부터 폼 데이터를 받고, 이를 컨트롤러에서 확인하시오.
 
-### view 생성
+### ① view 생성
 * action에 컨트롤러가 받기 위한 주소를 입력합니다.
 * method는 보안 때문에 post방식을 써야 합니다.
 * form 객체로 데이터를 보내기 위해서는 각 항목의  name에 이름을 적어줘야 합니다.
@@ -424,7 +436,7 @@ header - content - footer 영역으로 단순 잘라내서 각각의 파일로 �
 {{>layouts/footer}}
 ```
 
-### controller 생성
+### ② controller 생성
 * form에서 submit을 눌렀을 때 처리하기 위함
 * form에서 method를 post로 했기 때문에 PostMapping으로 받아야 함
 
@@ -455,7 +467,7 @@ public class ArticleController {
 }
 ```
 
-### model 생성
+### ③ model 생성
 * form의 값을 java로 가져오기 위해 정의함
 
 **.../dto/ArticleForm.java**
@@ -479,7 +491,7 @@ public class ArticleForm {
 
 ```
 
-### 테스트
+### ④ 테스트
 localhost/articles/new 로 접속하여 화면에 값을 입력하고
 서버 로그에 해당 값이 잘 넘어오는지 확인해봅니다.
 
