@@ -197,7 +197,42 @@ public class MyappController {
 
 
 ## 05.mvc의 역할과 실행 흐름
-> Mission : 
+> Mission : 뷰 템플릿 페이지가 출력되기까지, MVC의 역할과 실행 흐름을 설명하시오.
+
+### 기본 흐름
+1. Controller가 Client의 localhost:8080/hi 페이지 요청을 받음
+2. Model은 username에 값을 전달
+3. View Template은 Model 로 부터 받은 데이터를 가지고 화면을 출력
+
+### goodbye 페이지 만들기
+
+**view template 생성 :: goodbye.mustache**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>{{nicname}}님, 다음에 만나요!</h1>
+</body>
+</html>
+```
+
+**controller 생성 및 model 값 전달**
+```java
+    @GetMapping("/bye")
+    public String seeYouNext(Model model){
+
+        model.addAttribute("nicname", "배고픈사자");
+        return "goodbye";  // templates/greetings.mustache를 브라우저로 전송
+    }
+```
+
 
 ## 06.뷰 템플릿과 레이아웃
 > Mission : 
