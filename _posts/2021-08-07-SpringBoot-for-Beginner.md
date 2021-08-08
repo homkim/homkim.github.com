@@ -1131,7 +1131,12 @@ content varchar(4096)
 
 
 ## 11.데이터 조회하기 with JPA
+> Mission : 
+
+
+## 12.데이터 목록조회
 > Mission : 전체 목록을 가져와서 목록 화면에 출력하시오.
+
 
 ### 목록화면 생성
 
@@ -1245,14 +1250,306 @@ public class ArticleController {
 
 ```
 
-## 12.데이터 목록조회
-> Mission : 
 
 ## 13.링크와 리다이렉트
-> Mission : 
+> Mission : 목록에서 클릭하면 상세 페이지를 조회하게 만드세요.
+
+### 메인화면 링크 추가
+**articles/index.mustache**
+* 제목에 링크를 추가합니다.
+```html
+{{>layouts/header}}
+
+<!-- jumbotron -->
+<div class="container">
+  <h1>Article 목록</h1>
+  <hr>
+  <p>articles/index.mustache</p>
+  <a href="/articles/new" class="btn btn-primary">글쓰기</a>
+</div>
+<!-- articles table -->
+<div class="container">
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>제목</th>
+      <th>내용</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- 모델에서 보내준 articles를 사용! 데이터가 여러개라면 반복 출력 됨! https://taegon.kim/archives/4910 -->
+    {{#articles}}
+      <tr>
+        <td>{{id}}</td> <!-- id 출력 -->
+        <td>
+          <a href="/articles/{{id}}">{{title}}</a> <!-- 링크 추가 -->
+        </td>
+        <td>{{content}}</td>
+      </tr>
+    {{/articles}}
+  </tbody>
+</table>
+</div>
+{{>layouts/footer}}
+```
+
+### 상세 화면 추가
+**articles/show.mustache**
+```html
+{{>layouts/header}}
+<!-- jumbotron -->
+<div class="container">
+  <h1>Article 상세보기</h1>
+  <hr>
+  <p>articles/show.mustache</p>
+</div>
+<!-- table -->
+<div class="container">
+<table class="table table-hover">
+  <tbody>
+    {{#article}}
+      <tr>
+        <th>글번호</th>
+        <td>{{id}}</td>
+      </tr>
+      <tr>
+        <th>제목</th>
+        <td>{{title}}</td>
+      </tr>
+      <tr>
+        <th>내용</th>
+        <td>{{content}}</td>
+      </tr>
+    {{/article}}
+  </tbody>
+</table>
+<a href="/articles" class="btn btn-success btn-block">목록으로</a>
+</div>
+
+{{>layouts/footer}}
+```
+
+### 상세화면으로 전환 및 데이터 전달
+**controller/ArticleController**
+* show() 함수를 추가합니다.
+* 링크를 클릭하여 id 값을 가져오는 처리를 해줘야 합니다.
+
+```java
+package com.example.myapp.controller;
+
+import com.example.myapp.dto.ArticleForm;
+import com.example.myapp.entity.Article;
+import com.example.myapp.repository.ArticleRepository;
+
+// import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Controller
+@RequiredArgsConstructor // final 필드 값을 알아서 가져옴(@Autowired 대체)
+@Slf4j
+public class ArticleController {
+    
+    // @Autowired -> @RequiredArgsConstructor로 대체 : !!final 붙여야 함!!
+    private final ArticleRepository articleRepository;
+
+    @GetMapping("/articles")
+    public String index(Model model){ //뷰로 전달하기 위한 모델 객체 자동삽입
+        // 모든 Article을 가져옴
+        // Iterable 인터페이스는 ArrayList의 부모 인터페이스
+        Iterable<Article> articleList = articleRepository.findAll();
+
+        // 뷰페이지로 articles 전달
+        model.addAttribute("articles", articleList);
+
+        // 뷰페이지 설정
+        return "articles/index";
+    }
+
+    @GetMapping("/articles/new")
+    public String newArticleForm(){
+
+        return "articles/new";
+    }
+
+    @PostMapping("/articles/create")
+    public String createArticle(ArticleForm form){
+
+        
+        // 서버에 부하를 주는 문법으로 로깅으로 변경한다
+        // 아래도 모두 변경해준다.
+        /*
+        System.out.println(form.toString()); 
+        */
+        log.info(form.toString());
+
+        // 1.DTO를 Entity로 변환
+        Article article = form.toEntity();
+        //System.out.println(article.toString());
+        log.info(article.toString());
+
+        // 2.Repository에게 Entity를 DB안에 저장
+        Article saved = articleRepository.save(article);
+        //System.out.println(saved.toString());
+        log.info(saved.toString() + " : 잘 저장되었습니다!!");
+
+        return "redirect:/articles";
+    }
+
+    @GetMapping("/articles/{id}")
+    public String show(@PathVariable Long id, // url의 {id} 값을 변수화!
+                       Model model) {
+        // id를 통해 Article을 가져옴!
+        Article article = articleRepository.findById(id).orElse(null);
+        // article을 뷰 페이지로 전달
+        model.addAttribute("article", article);
+        return "articles/show";
+    }
+}
+```
+
+### JSON API로 데이터 가져오기
+
+Article 객체를 JSON API로 가져오기 위한 작업입니다.
+API형식으로 데이터를 받을 때, JSON을 사용한다. 왜 그럴까? 장점이 있기 때문이다. 어떤 장점? 바로 범용성이다.
+
+**json api 사용이유**
+클라이언트는 사실 수도 없다. 웹기반의 브라우저, 앱 기반의 스마트폰, IoT 등… 수도 없다. 수 많은 클라이언트 별, 맞춤 뷰 페이지를 만드는 것은 어렵다. 이를 해결하는 방법이 역할 분담이다. 서버는 데이터만 전달하고, 클라이언트는 이를 받아 화면에 보여주기로 하는 것이다. 이때 데이터는 JSON으로 나타낸다.
+
+**DTO와 Entity는 굳이 나눠야 할까?**
+비지니스의 데이터를 담고있는 Entity. 이는 쉽게 변하지 않는다. 그러나 화면에서 보여주는 데이터는 수시로 변한다. 따라서, 이를 구분하여 만드는 것이 더 효율적이다.
+
+Entity가 식재료라면, DTO는 어느정도 개별 조리가 된 음식이랄까? 이를 최종적으로 플레이팅 하는 건, 클라이언트의 영역이다.
+
+**api/ArticleApiController**
+*  @GetMapping("/api/articles/{id}") 처리를 해줍니다.
+```java
+package com.example.myapp.api;
+
+import com.example.myapp.dto.ArticleForm;
+import com.example.myapp.entity.Article;
+import com.example.myapp.repository.ArticleRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RestController
+public class ArticleApiController {
+
+    @Autowired
+    private ArticleRepository articleRepository;
+    
+    @PostMapping("/api/articles") // Post 요청이 "/api/articles"로 들어오는 경우 처리
+    public Long create(@RequestBody ArticleForm form) { // Json 데이터를 받아옴
+        log.info(form.toString() + "::form"); // 받아온 데이터 확인
+
+        Article article = form.toEntity();
+        log.info(article.toString() + "::article");
+
+        Article saved = articleRepository.save(article);
+        log.info(saved.toString() + "::saved");
+
+        return saved.getId();
+    }
+
+    @GetMapping("/api/articles/{id}")
+    public ArticleForm getArticle(@PathVariable Long id) {
+        Article entity = articleRepository.findById(id) // id로 article을 가져옴!
+                .orElseThrow( // 만약에 없다면,
+                        () -> new IllegalArgumentException("해당 Article이 없습니다.") // 에러를 던짐!
+                );
+        // article을 form으로 변경! 궁극적으로는 JSON으로 변경 됨! 왜? RestController 때문!
+        return new ArticleForm(entity);
+        
+    }
+    
+}
+```
+
+**dto/ArticleForm.java**
+* id 필드 추가
+* 생성자: entity 객체를 form으로 변환!
+
+```java
+package com.example.myapp.dto;
+
+import com.example.myapp.entity.Article;
+
+import lombok.AllArgsConstructor;
+
+import lombok.Data;   // @Data 하나로 통합
+
+// import lombok.AllArgsConstructor;
+// import lombok.ToString;
+
+@AllArgsConstructor
+// @ToString
+
+@Data  // 생성자(디폴트 All), getter, setter, toString 알아서 다 만들어줌
+public class ArticleForm {
+    private Long id;   //id 필드 추가
+    private String title;
+    private String content;
+    
+    // @AllArgsConstructor 으로 생성자 리펙토링
+    
+    // public ArticleForm(String title, String content) {
+    //     this.title = title;
+    //     this.content = content;
+    // }
+
+    // 생성자: entity 객체를 form으로 변환.
+    public ArticleForm(Article entity) {
+        this.id = entity.getId();
+        this.title = entity.getTitle();
+        this.content = entity.getContent();
+    }    
+
+    // @ToString 으로 리펙토링
+    /*
+    @Override
+    public String toString() {
+        return "ArticleForm [title=" + title + ", content=" + content + "]";
+    }
+    */
+
+    public Article toEntity() {
+
+        // Build 패턴으로 객체 생성! 입력순서 일치하지 않아도 됨
+        // return new Article(null, title, content);
+        return Article.builder() //@Builder 어노테이션 적용
+                .id(null)
+                .title(title)
+                .content(content)
+                .build();
+    }
+
+    
+}
+```
+
 
 ## 14.수정 폼 만들기
-> Mission : 
+> Mission : 상세 페이지에서 수정 버튼을 클릭하여 수정 페이지가 나오게 하고,수정한 내용을 서버로 전달하시오. Ajax 사용 할 것.
+
+[클라우드스터디 강좌](https://cloudstudying.kr/lectures/444)
+
+
+
 
 ## 15.무언가에 고수가 되는 법 (세 가지 일의 감각)
 > Mission : 
