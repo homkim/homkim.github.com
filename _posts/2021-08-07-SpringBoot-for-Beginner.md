@@ -904,7 +904,6 @@ public class ArticleController {
 ### ③ AJAX 적용
 데이터를 저장하고 목록을 가져올 때 전부 다시 가져오는데 건수가 적을 땐 상관없으나,  
 데이타가 많을 경우 문제가 발생할 수 있어 필요한 데이타만 가져와서 화면을 경신해야 합니다.  
-이 경우 ajax를 사용하여 빠르게 처리할 수 있습니다.
 
 **new.mustache**
 ```html
@@ -1132,7 +1131,119 @@ content varchar(4096)
 
 
 ## 11.데이터 조회하기 with JPA
-> Mission : 
+> Mission : 전체 목록을 가져와서 목록 화면에 출력하시오.
+
+### 목록화면 생성
+
+**articles/index.mustache**
+```html
+{{>layouts/header}}
+
+<!-- jumbotron -->
+<div class="jumbotron">
+  <h1>Article 목록</h1>
+  <hr>
+  <p>articles/index.mustache</p>
+  <a href="/articles/new" class="btn btn-primary">글쓰기</a>
+</div>
+<!-- articles table -->
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>제목</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- 모델에서 보내준 articles를 사용! 데이터가 여러개라면 반복 출력 됨! https://taegon.kim/archives/4910 -->
+    {{#articles}}
+      <tr>
+        <td>{{id}}</td> <!-- id 출력 -->
+        <td>{{title}}</td> <!-- title 출력 -->
+      </tr>
+    {{/articles}}
+  </tbody>
+</table>
+
+{{>layouts/footer}}
+```
+
+### view에 넘겨줄 데이터 처리
+* @RequiredArgsConstructor 추가 및 private final ArticleRepository articleRepository;에 final 추가
+* Iterable<Article> articleList = articleRepository.findAll(); 으로 모든 데이터 가져옴
+* model.addAttribute("articles", articleList); view로 데이터 전달
+* 글쓰기 버튼이 Get 방식으로 전환되어 Annotation 수정 @GetMapping("/articles/new")
+
+**controller/ArticleController.java**
+```java
+package com.example.myapp.controller;
+
+import com.example.myapp.dto.ArticleForm;
+import com.example.myapp.entity.Article;
+import com.example.myapp.repository.ArticleRepository;
+
+// import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Controller
+@RequiredArgsConstructor // final 필드 값을 알아서 가져옴(@Autowired 대체)
+@Slf4j
+public class ArticleController {
+    
+    // @Autowired -> @RequiredArgsConstructor로 대체 : !!final 붙여야 함!!
+    private final ArticleRepository articleRepository;
+
+    @GetMapping("/articles")
+    public String index(Model model){ //뷰로 전달하기 위한 모델 객체 자동삽입
+        // 모든 Article을 가져옴
+        // Iterable 인터페이스는 ArrayList의 부모 인터페이스
+        Iterable<Article> articleList = articleRepository.findAll();
+
+        // 뷰페이지로 articles 전달
+        model.addAttribute("articles", articleList);
+
+        // 뷰페이지 설정
+        return "articles/index";
+    }
+
+    @GetMapping("/articles/new")
+    public String newArticleForm(){
+
+        return "articles/new";
+    }
+
+    @PostMapping("/articles/create")
+    public String createArticle(ArticleForm form){
+
+        
+        // 서버에 부하를 주는 문법으로 로깅으로 변경한다
+        // 아래도 모두 변경해준다.
+        /*
+        System.out.println(form.toString()); 
+        */
+        log.info(form.toString());
+
+        // 1.DTO를 Entity로 변환
+        Article article = form.toEntity();
+        //System.out.println(article.toString());
+        log.info(article.toString());
+
+        // 2.Repository에게 Entity를 DB안에 저장
+        Article saved = articleRepository.save(article);
+        //System.out.println(saved.toString());
+        log.info(saved.toString() + " : 잘 저장되었습니다!!");
+
+        return "redirect:/articles";
+    }
+}
+
+```
 
 ## 12.데이터 목록조회
 > Mission : 
