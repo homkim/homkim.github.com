@@ -740,7 +740,167 @@ insert, update, delete 등의 sql문을 실행해봅니다.
 
 
 ## 10.Lombok과 리팩터링
-> Mission : 
+> Mission : 롬복을 활용하여 기존 코드를 리팩토링 해보세요.
+
+DB에 데애터를 저장하는 복잡한 절차를 롬복을 통해 간소화 해봅시다.  
+<br>
+클래스를 생성할 때  getter(), setter(), constructor(), toString(),,, 등을  
+매번 작성해야 하는데 이런게 생각보다 만만치 않습니다.  
+<br>
+이런 이유 때문에 간소화하기 위한 툴인 롬복이 등장했습니다.  
+Refactoring이란 코드의 구조 성능을 개선하는 작업을 말하며 
+Logging이란 일련의 과정을 기록하는 것입니다.  
+
+### ① Refactoring
+리펙토링은 constructor, getter, setter 등을 간소화하는 기능입니다.  
+Annotation을 추가하면 해당 패키지가 import 되는 것을 확인할 수 있습니다.  
+
+**.../dto/ArticleForm.java**
+```java
+package dto;
+
+import com.example.myapp.entity.Article;
+
+import lombok.AllArgsConstructor;
+import lombok.ToString;
+
+@AllArgsConstructor
+@ToString
+public class ArticleForm {
+    private String title;
+    private String content;
+    
+    // @AllArgsConstructor 으로 생성자 리펙토링
+    /*
+    public ArticleForm(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+    */
+
+    // @ToString 으로 리펙토링
+    /*
+    @Override
+    public String toString() {
+        return "ArticleForm [title=" + title + ", content=" + content + "]";
+    }
+    */
+
+    public Article toEntity() {
+
+        return new Article(null, title, content);
+    }
+    
+    
+}
+```
+
+**.../entity/Article.java**
+```java
+package com.example.myapp.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import lombok.AllArgsConstructor;
+import lombok.ToString;
+
+@Entity //DB가 해당 객체 인식가능
+@AllArgsConstructor
+@ToString
+public class Article {
+
+    @Id // 대표값 지정
+    @GeneratedValue // 1,2,3 자동생성
+    private Long id;
+
+    @Column
+    private String title;
+
+    @Column
+    private String content;
+
+    // @AllArgsConstructor 으로 리펙토링
+    /*
+    public Article(Long id, String title, String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+    }
+    */
+
+    // @ToString 으로 리펙토링
+    /*
+    @Override
+    public String toString() {
+        return "Article [id=" + id + ", title=" + title + ", content=" + content + "]";
+    }
+    */
+    
+}
+```
+
+### ② Logging
+System.out.println을 통해 로그를 출력하던 것을 롬복의 log 출력기능을 활용하여 구현합니다. 기존 방식의 경우 서버에 부하를 주기 때문에 사용하는 것을 지양해야 합니다.
+
+log 기능을 사용하기 위해 @Slf4j 어노테이션을 추가하고 
+기존 로그 출력기능을 log.info() 함수로 변경합니다.
+
+**.../controller/ArticleController.java**
+```java
+package com.example.myapp.controller;
+
+import com.example.myapp.entity.Article;
+import com.example.myapp.repository.ArticleRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import dto.ArticleForm;
+import lombok.extern.slf4j.Slf4j;
+
+@Controller
+@Slf4j
+public class ArticleController {
+    
+    @Autowired
+    private ArticleRepository articleRepository;
+
+    @GetMapping("/articles/new")
+    public String newArticleForm(){
+
+        return "articles/new";
+    }
+
+    @PostMapping("/articles/create")
+    public String createArticle(ArticleForm form){
+
+        
+        // 서버에 부하를 주는 문법으로 로깅으로 변경한다
+        // 아래도 모두 변경해준다.
+        /*
+        System.out.println(form.toString()); 
+        */
+        log.info(form.toString());
+
+        // 1.DTO를 Entity로 변환
+        Article article = form.toEntity();
+        //System.out.println(article.toString());
+        log.info(article.toString());
+
+        // 2.Repository에게 Entity를 DB안에 저장
+        Article saved = articleRepository.save(article);
+        //System.out.println(saved.toString());
+        log.info(saved.toString());
+
+        return "articles/new";
+    }
+}
+```
 
 ## 11.데이터 조회하기 with JPA
 > Mission : 
