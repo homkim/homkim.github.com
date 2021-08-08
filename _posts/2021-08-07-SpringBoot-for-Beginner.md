@@ -901,6 +901,235 @@ public class ArticleController {
     }
 }
 ```
+### ③ AJAX 적용
+데이터를 저장하고 목록을 가져올 때 전부 다시 가져오는데 건수가 적을 땐 상관없으나,  
+데이타가 많을 경우 문제가 발생할 수 있어 필요한 데이타만 가져와서 화면을 경신해야 합니다.  
+이 경우 ajax를 사용하여 빠르게 처리할 수 있습니다.
+
+**new.mustache**
+```html
+{{>layouts/header}}
+
+
+<div class="container">   
+    <h1>Article 등록</h1>
+    <hr>
+    <p>articles/new.mustache</p>
+</div>
+
+<!-- form tag에서 method와 action 삭제. ajax로 보내기 때문에 js로 구현 -->
+
+<form class="container">
+    
+    <div class="form-group">
+        <label for="title">제목</label>
+        <!-- name="title" 추가, DTO의 필드명과 일치해야 함! -->
+        <input name="title" type="text" class="form-control" id="article-title" placeholder="제목을 입력하세요">
+    </div>
+
+    <div class="form-group">
+        <label for="content">내용</label>
+        <!-- name="content" 추가, DTO의 필드명과 일치해야 함! -->
+        <textarea name="content" class="form-control" id="article-content" placeholder="내용을 입력하세요" rows="3"></textarea>
+    </div>
+
+    <!-- type="button"으로 변경, id값 추가 -->
+    <button type="button" class="btn btn-primary" id="article-create-btn">제출</button>
+</form>
+
+<Script>
+// article 객체 생성
+var article = {
+
+    // 초기화(이벤트 등록) 메소드
+    init: function() {
+        // 스코프 충돌 방지! (https://mobicon.tistory.com/189)
+        var _this = this;
+        // 생성 버튼 선택
+        const createBtn = document.querySelector('#article-create-btn');
+        // 생성 버튼 클릭 시, 동작 할 메소드를 연결!
+        createBtn.addEventListener('click', _this.create);
+    },
+
+    // article 생성 메소드
+    create: function() {
+        // form 데이터를 JSON으로 만듬
+        var data = {
+            title: document.querySelector('#article-title').value,
+            content: document.querySelector('#article-content').value,
+        };
+
+    // 데이터 생성 요청을 보냄
+    // fetch(URL, HTTP_REQUEST)
+    fetch('/api/articles', {
+        method: 'POST', // POST 방식으로, HTTP 요청.
+        body: JSON.stringify(data), // 위에서 만든 폼 데이터(data)를 함께 보냄.
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    }).then(function(response) { // 응답 처리!
+        // 요청 성공! 
+        if (response.ok) {
+        alert('게시글이 작성 되었습니다.');
+        window.location.href='/articles'; // 해당 URL로 브라우저를 새로고침!
+        } else { // 요청 실패..
+        alert('게시글 작성에 문제가 생겼습니다.');
+        }
+    });
+    }
+};
+// 객체 초기화
+article.init();
+</script>
+
+<!--  원래 소스:: AJAX 구현을 위해 주석처리함
+<form class="container" action="/articles/create" method="post">
+    <div class="jumbotron">
+        <h1>Article 등록</h1>
+        <hr>
+        <p>articles/new.mustache</p>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">제목</label>
+        <input type="text" class="form-control" name="title">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">내용</label>
+        <textarea class="form-control" rows=3 name="content" ></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+-->
+
+{{>layouts/footer}}
+```
+
+
+**REST API 구현**
+
+**.../api/ArticleApiController.java**
+기존 ArticleController 있던 기능을 Rest로 다시 구성합니다.(@RestController)
+
+```java
+package com.example.myapp.api;
+
+import com.example.myapp.dto.ArticleForm;
+import com.example.myapp.entity.Article;
+import com.example.myapp.repository.ArticleRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RestController
+public class ArticleApiController {
+
+    @Autowired
+    private ArticleRepository articleRepository;
+    
+    @PostMapping("/api/articles") // Post 요청이 "/api/articles"로 들어오는 경우 처리
+    public Long create(@RequestBody ArticleForm form) { // Json 데이터를 받아옴
+        log.info(form.toString() + "::form"); // 받아온 데이터 확인
+
+        Article article = form.toEntity();
+        log.info(article.toString() + "::article");
+
+        Article saved = articleRepository.save(article);
+        log.info(saved.toString() + "::saved");
+
+        return saved.getId();
+    }
+    
+}
+```
+
+**entity/Article.java**
+```java
+@Getter // 게터를 자동 생성!
+@ToString // toString() 자동 생성!
+@NoArgsConstructor // 디폴트 생성자 넣어 줌!
+@Entity // DB 테이블에 저장될 클래스 임!
+public class Article {
+    @Id // PK(Primary Key)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // DB에서 자동관리. 숫자 자동 증가(1,2,,,)
+    private Long id;
+
+    @Column(length = 100, nullable = false) 
+    private String title;
+    
+    @Column(columnDefinition = "TEXT", nullable = false) // 
+    private String content;
+
+    @Builder // 호출하는 곳에서 인자를 순서에 상관없이 입력하기 위함
+    public Article(Long id, String title, String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+    }
+}
+```
+
+**dto/ArticleForm.java**
+```java
+@Data // 생성자(디폴트, All), 게터, 세터, toString 등 다 만들어 줌!
+public class ArticleForm {
+    private String title;
+    private String content;
+    // 빌더 패턴으로 객체 생성! 생성자의 변형. 입력 순서가 일치하지 않아도 됨.
+    public Article toEntity() {
+        return Article.builder()
+                .id(null)
+                .title(title)
+                .content(content)
+                .build();
+    }
+}
+```
+
+### ④ h2 file 적용하기
+메모리 DB로는 작업이 매우 번거로움
+
+**Application.properties**
+* Application.yaml로 파일명을 변경하고 내용을 변경해준다.
+* path는 localhost:8080/testdb로 접속
+* 파일은 app root에 testdb로 생성됨
+* AUTO_SERVER=TRUE 다중접속 허용
+
+```yml
+# application.properties -> application.yaml로 변경
+# spring.h2.console.enabled=true
+
+spring:
+    # DB 설정
+    h2:
+        console:
+            enabled: true
+            path: /testdb
+    datasource:
+        driver-class-name: org.h2.Driver
+        url: jdbc:h2:file:./testdb;AUTO_SERVER=TRUE
+        username: sa
+        password:
+
+```
+
+파일을 만들경우 테이블이 자동생성되지 않아 에러가 발생됩니다.  
+테이블을 생성한 뒤에 실행하세요.  
+```sql
+CREATE TABLE article(
+id Long PRIMARY KEY auto_increment, 
+title VARCHAR(100),
+content varchar(4096)
+);
+```
+
+
 
 ## 11.데이터 조회하기 with JPA
 > Mission : 
