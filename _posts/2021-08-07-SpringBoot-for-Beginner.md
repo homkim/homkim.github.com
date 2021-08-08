@@ -716,7 +716,28 @@ public class ArticleController {
 
 
 ## 09.DB 테이블과 SQL
-> Mission : 
+> Mission : 저장된 데이터를 직접 DB에서 확인하시오.
+
+이전시간에 저장한 데이터를 직접 DB에서 확인해봅시다.  
+먼저 Project properties 파일에 console 사용으로 셋팅합니다.
+
+**.../resources/application.properties**  
+```java
+spring.h2.console.enabled=true
+```
+
+그 다음 localhost:8080/h2-console 로 접속합니다.  
+connect page 에서 jdbc url을 입력해야 하는데 서버 로그에서 찾습니다.  
+로그의 맨 마지막 h2-console 문구를 찾아서 url을 복사하여 화면에 입력합니다.
+
+```log
+2021-08-08 10:17:24.957  INFO 24109 --- [  restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:424e04f6-3ba0-4c5d-a5d9-03c3220c712a'
+```
+
+테이블에 데이터가 잘 들어가 있는지 확인해보고  
+insert, update, delete 등의 sql문을 실행해봅니다.
+
+
 
 ## 10.Lombok과 리팩터링
 > Mission : 
