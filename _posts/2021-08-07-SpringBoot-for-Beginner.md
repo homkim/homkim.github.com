@@ -1429,7 +1429,9 @@ API형식으로 데이터를 받을 때, JSON을 사용한다. 왜 그럴까? �
 Entity가 식재료라면, DTO는 어느정도 개별 조리가 된 음식이랄까? 이를 최종적으로 플레이팅 하는 건, 클라이언트의 영역이다.
 
 **api/ArticleApiController**
+
 *  @GetMapping("/api/articles/{id}") 처리를 해줍니다.
+
 ```java
 package com.example.myapp.api;
 
@@ -1481,6 +1483,7 @@ public class ArticleApiController {
 ```
 
 **dto/ArticleForm.java**
+
 * id 필드 추가
 * 생성자: entity 객체를 form으로 변환!
 
