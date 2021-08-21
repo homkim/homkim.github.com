@@ -21,7 +21,7 @@ meta_keywords: Java, Spring Boot, Spring WEB, Mustache, JPA
 last_modified_at: '2021-08-07 07:31:02'
 ---
 
-> 이 글은 유튜브 홍팍님의 강의를 정리한 글입니다.  
+> 이 글은 유튜버 홍팍님의 강의를 정리한 글입니다.  
 > 다른 점은 linux 데스크탑에서 vscode를 사용했습니다.
 
 사용한 툴 : 
